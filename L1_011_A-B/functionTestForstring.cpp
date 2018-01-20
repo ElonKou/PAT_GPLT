@@ -9,6 +9,7 @@
 using namespace std;
 
 void dosome(char *str){
+	cout << str << endl;
 	str[5] = 127;
 	cout << str << endl;
 }
@@ -18,15 +19,15 @@ void doothers(string str){
 }
 
 int main(){
-	string strr;
-	cin >> strr;
-	doothers(strr);
-	cout << strr<< endl;	
+	//string strr;
+	//cin >> strr;
+	//doothers(strr);
+	//cout << strr<< endl;	
 
-	//char str[10];
-	//cin.getline(str,10);
-	//dosome(str);
-	//cout << str<< endl;	
+	char str[10];
+	cin.getline(str,10);
+	dosome(str);
+	cout << str<< endl;	
     return 0;
 }
 
