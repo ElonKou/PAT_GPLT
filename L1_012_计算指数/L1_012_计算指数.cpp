@@ -8,6 +8,7 @@
 #include <iostream>
 using namespace std;
 
+
 int main(){
 	// 输出指数的值,太简单了
 	int multi = 1;
