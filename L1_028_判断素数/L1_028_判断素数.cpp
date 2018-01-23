@@ -8,6 +8,26 @@
 #include <iostream>
 using namespace std;
 
+long multi(int *list){
+    int i = 0;
+    long result = 1;
+    while(list[i] != 0){
+        result *= list[i++];
+    }
+    return result;
+}
+
+void suList(int *list){
+    // init the list of su.
+    int i = 2;
+    for(){
+        //
+    }
+    while(multi(list) <= 2^31){
+        i++;
+    }
+}
+
 int isSu(long number){
     if(number %2 == 0&& number !=2 || number == 1){
         return 0;
@@ -23,6 +43,8 @@ int isSu(long number){
         return 1;
     }
 }
+
+
 
 int main(){
     int num;
