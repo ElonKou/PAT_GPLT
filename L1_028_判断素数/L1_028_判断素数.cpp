@@ -6,6 +6,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 long multi(int *list){
@@ -20,7 +21,7 @@ long multi(int *list){
 void suList(int *list){
     // init the list of su.
     int i = 2;
-    for(){
+    for(i;i < 100;i++){
         //
     }
     while(multi(list) <= 2^31){
@@ -28,14 +29,14 @@ void suList(int *list){
     }
 }
 
-int isSu(long number){
+int isSu(long number,int bound){
     if(number %2 == 0&& number !=2 || number == 1){
         return 0;
     }else if(number == 2 ){
         return 1;
     }else{
         //判断是否是素数
-        for(long i = 2;i < number/2;i ++){
+        for(long i = 2;i < bound+1;i ++){
             if(number%i == 0){
                 return 0;
             }
@@ -51,10 +52,12 @@ int main(){
     cin >> num;
     int result[num] = {0};
     long number;
-
+    
+    int list[100];
     for(int i = 0;i<num;i++){
         cin >> number;
-        result[i] = isSu(number);
+        int bound = sqrt(number);
+        result[i] = isSu(number,bound);
     }
     for(int i=0;i<num-1;i++){
         if(result[i] == 1){
