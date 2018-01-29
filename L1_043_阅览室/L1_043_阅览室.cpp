@@ -22,14 +22,6 @@ typedef struct{
     record *last;
 }day;
 
-int checkOk(record *r ,day * d){
-    int ok;
-    //for(){
-        ////
-    //}
-    return ok;
-}
-
 int isOk(day *d,record *r){
     // 检查是否符合要求
     int ok = 0;
