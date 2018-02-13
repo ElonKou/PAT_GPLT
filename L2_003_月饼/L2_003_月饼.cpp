@@ -6,11 +6,26 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #include <iostream>
-
+#include <algorithm>
 using namespace std;
 
-int main(){
+void sort(){
 	//
+}
+
+void calculate(int count,int sum){
+	//
+}
+
+void inputInfo(int){
+	//
+}
+int main(){
+	int count,sum;
+	cin >> count >> sum;
+	int info[2][count];
+	inputInfo(&info);
+	calculate(count,sum);
     return 0;
 }
 
