@@ -71,18 +71,18 @@ void print(Cell list,int start){
 
 void sortPrint(Cell extra){
     Cell index = extra->n;
-    Cell pre = NULL:
+    Cell pre = NULL;
     while(index != NULL){
         Cell next = findCell(extra,index);
         if(next -> next != -1){
             index ->printNext = next;
+            cout << index ->pre << " "<< endl;
         }
         index = index -> n;
     }
-    index
-    while(){
-        //
-    }
+    //while(){
+        ////
+    //}
 }
 
 int main(){
