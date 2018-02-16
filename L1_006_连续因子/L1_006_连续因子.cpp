@@ -2,135 +2,64 @@
 // File:  L1_006_连续因子.cpp
 // Author :elonkou
 // E-mail :elonkou@ktime.cc
-// Date   :Wed 17 Jan 2018 05:00:10 PM CST
+// Date   :Fri 16 Feb 2018 05:46:10 PM CST
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #include <iostream>
-#include <math.h>
-#define MAX_SIZE 100
-#define MAX_LENGTH 32
-
+#include <cmath>
+#define MAX_ 12					// the 2^31 won't larger MAX_!
 using namespace std;
 
-void printl(int i,int arr[]){
-	cout << i <<":";
-	int index = 0 ;
-	while(arr[index] != 0){
-		cout << arr[index] << "*";
-		index++;
+long long multi(int start,int end){
+	long long res = 1;
+	for(;start < end;start++){
+		res *= start;
+	}
+	return res;
+}
+
+void print(int index,int len,int num){
+	long long result = 1;
+	//cout << len - index +1<< endl;
+	//cout << index << " " << len << endl;
+	for(int i = index;i<len+1;i++){
+		result *= i;
+		if(i != index){
+			cout << "*" << i;
+		}else{
+			cout << i;
+		}
+	}
+	cout << " = " << result;
+	if(num % result == 0){
+		cout << "是";
 	}
 	cout << endl;
 }
 
-
-int cauLength(int *array){
-	int len = 0;
-	while(array[len]!=0){
-		len++;
-	}
-	return len;
-}
-
-
-void printMax(long data,int result[][MAX_LENGTH],int length){
-	//
-	int max = 0;
-	int maxPos = 0;
-	int i = 0;
-	for(int i = 0;i<length;i++){
-		if(max < cauLength(result[i])){
-			max = cauLength(result[i]);
-			maxPos = i;
-		}
-	}
-	cout << max << endl;
-	for (i = 0;result[maxPos][i+1]!=0;i++){
-		cout << result[maxPos][i] << "*";
-	}
-	cout << result[maxPos][i];
-}
-
-long product(int arr[]){
-	long result = 1;
-	int i = 0;
-	while(arr[i]!=0){
-		result *= arr[i];
-		i++;
-	}
-	return result;
-}
-
-int ifOverflow(long data,int arr[],int nextdata){
-	int isOver = 0;
-	if(data < product(arr)*nextdata){
-		isOver = 1;
-	}
-	return isOver;
-}
-
-int checkPrint(long data,int factors[],int length,int result[][MAX_LENGTH]){
-	// 组合形成最大的因式
-	int count = 0;
-	//printl(0,factors);
-	for (int i = 0;i<length;i++){
-		int bias = 0;
-		//把连续的数字复制到result中
-		result[i][bias] = factors[i];
-		while((factors[bias+i+1]-factors[i+bias])==1){
-			bias++;
-			result[i][bias] = factors[i+bias];
-			if(ifOverflow(data,result[i],factors[bias+i+1])!= 0){
-				break;
-			}
-		}
-		//printl(factors[i],result[i]);
-		//cout << "=" << product(&result[i]) << endl;
-	}
-	printMax(data,result,length);
-}
-
-void getAllFactor(long data,int *list,int * factors,int *length){
-	long factorMax  = (long)sqrt(data);
-	int step = (data%2==1)?2:1;		// 设置循环步长,奇数步长:2,偶数步长:1(作用:减少循环次数)
-	int index = (data%2==0)?2:3;	// 设置起始的下标,奇数为3,偶数为2(作用:减少循环次数)
-	int divisor = index;			// 除数
-	long quotient = 0;				// 商
-	int count = 0;
-	int noName = 1;
-
-	//cout << "factor:" << factorMax << endl;
-	//cout << "step  :" << step << endl;
-	//cout << "index :" << index << endl;
-	
-	for ( count; index <= factorMax ; index += step){
-		divisor = index;
-		quotient = (data%divisor == 0)?(data/divisor):0;
-		if(quotient != 0 && (divisor <= quotient)){
-			//cout << divisor <<":"<< quotient <<endl;
-			factors[count++] = divisor;
-			if(divisor != quotient){
-				factors[count] = quotient;
-			}else{
-				noName = 0;
-			}
-		}else if(divisor > quotient && quotient != 0){
-			*length = count+noName;
-			break;
-		}
-	}
-	*length = count+noName;
-}
-
 int main(){
-	long data = 0;
-	int factors[MAX_LENGTH] = {0};
-	int length = 0;
-	cin >> data;
-	int list[MAX_SIZE] = {0};
-	getAllFactor(data,list,factors,&length);
-	int results[length][MAX_LENGTH] = {0};
-    int count = checkPrint(data,factors,length,results);
-	
+	// we can use loop to bilud  some array numwers,and chacek it if will out of the input number.
+	// the most shortest array containes longest number set.
+    int num,top;
+	cin >> num;
+	top = sqrt(num+1);
+	int loop = 1;
+	int isOk = 0;
+	for(int len = MAX_;len > 1 ;len--,loop++){
+		for(int index = 2;index < loop+2;index ++){
+			//cout << index << " " << index - loop + MAX_ -1<< endl;
+			int end = index - loop + MAX_ -1;
+			long long result = multi(index,end);
+				print(index,end,num);
+			//if(num % result == 0 && result !=1){
+				//print(index,end);
+				//isOk = 1;
+				//if(isOk == 1){
+					//return 0;
+				//}
+			//}
+		}
+	}
 	return 0;
 }
 
