@@ -7,11 +7,13 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <iomanip>
+
 using namespace std;
 
 typedef struct {
     int num;
-    int arr[1000];
+    int arr[1001];
 }quan;
 
 typedef struct all{
@@ -19,7 +21,7 @@ typedef struct all{
     quan list[100];
 }*allList;
 
-int check(allList L,int num){
+int check(allList L,int num,int *target){
     int handsome = 0;
     int isin = 0;
     for(int i = 0;i< (L->quanNum);i++){
@@ -35,21 +37,24 @@ int check(allList L,int num){
     return handsome;
 }
 
-void reduceduplicate(int *result,int *output,int size){
-    for(int i =0;i<size;i++){
-        for(int j = 0;j<i;j++){
-            if(output[i] == output[j]){
-                result[i] = 0;
-                break;
-            }
-        }
+void reduceduplicate(int *output,int *target,int size){
+    for(int i = 0;i < size;i++){
+        target[output[i]] = 1;
+		//for(int j = i+1;j<size;j++){
+            //if(output[i] == output[j]){
+                //output[j] = -1;
+                //break;
+            //}
+        //}
     }
 }
 
+
 int main(){
-    allList L =(allList)malloc(sizeof(all));
+    //allList L =(allList)malloc(sizeof(all));
+    allList L = new all;
     cin >> L->quanNum;
-    for(int i =0 ;i<L->quanNum;i++){
+    for(int i = 0 ;i<L->quanNum;i++){
         cin >> (L->list[i]).num;
         for(int j =0;j < (L->list[i]).num;j++){
             cin >> (L->list[i]).arr[j];
@@ -58,34 +63,52 @@ int main(){
     // 输入查询数据
     int checkNum;
     cin >> checkNum;
-    int checkList[checkNum];        // 需要查询的数
-    int result[checkNum];           // 查询到的结果
-    int output[checkNum];
+    int checkList[checkNum];        // 输入需要查询的数
+    int output[checkNum];			// 计算得到handsome的数据
+    int target[100000] = {0};		// 进行标记的数组,防止大规模的数据计算的时候,计算时间非常高
     
     int index = 0;
     for(int i = 0;i < checkNum;i++){
-        cin >> checkList[i];
-        int res = check(L,checkList[i]);
+        int num;
+		cin >> num;
+		checkList[i] = num;
+		target[num] = 1;
+        int res = check(L,checkNum,target);
+		//
         if(res == 1){
-            output[index] = checkList[i];
-            result[index ++] = res;
+            output[index++] = checkList[i];
         }
     }
-    reduceduplicate(result,output,index);
-    int start = 0;
-    if(result[index] == 0){
-        cout << "No one is handsome";
-        return 0;
-    }else{
-        cout << output[start++];
-    }
+    reduceduplicate(output,target,index);
 
-    for(int i = start;i < index ;i++){
-        if(result[i] != 0 ){
-            cout << " " << output[i];
-        }
-    }
-    // 进行查询输出
+    int count = 0;
+    
+	for(int i = 0;i < index ;i++){
+		if(target[output[i]] == 1){
+			count ++;
+			target[output[i]] --;
+			
+			if(count == 1){
+				cout << setw(5) << setfill('0');
+				cout << output[i];
+			}else{
+				cout << " " << setw(5) << setfill('0') << output[i];
+			}
+		}
+
+		//if(output[i] != -1){
+			//count ++;
+			//if(count == 1){
+				//cout << setw(5) << setfill('0');
+				//cout << output[i];
+			//}else{
+				//cout << " " << setw(5) << setfill('0') << output[i];
+			//}
+		//}	
+	}
+	if(count == 0){
+		cout << "No one is handsome";
+	}
     return 0;
 }
 
