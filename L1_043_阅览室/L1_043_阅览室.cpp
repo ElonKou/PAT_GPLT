@@ -14,19 +14,19 @@ typedef struct record{
     int hour;
     int mins;
     record *next;
-}record;
+}*Record;
 
 typedef struct{
-    int length;
-    record *list;
-    record *last;
+    int length;							// 有效元素的个数
+    record *list = NULL;				// 每个链表元素的开始位置
+    record *last = NULL;				// 每个链表元素的最后一个元素,用作插入元素
 }day;
 
-int isOk(day *d,record *r){
+int isInputOk(day *d,record *r){
     // 检查是否符合要求
     int ok = 0;
-    record * temp = NULL;
-    record * rr = d->list->next;
+    Record temp = NULL;
+    Record rr = d->list->next;
     while(rr != NULL){
         // 找到上次访问的记录
         if(rr -> code == r -> code){
@@ -66,12 +66,13 @@ int isOk(day *d,record *r){
 void calculate(day days[],int num){
     int result[num][2] = {0};
     for(int i = 0;i <num;i++){
-        record *r = days[i].list->next;
+        Record r = days[i].list->next;
         while(r != NULL){
             // 循环每个元素
             // 找到每个和之相匹配的元素
-            record * temp = NULL;
-            record * rr = days[i].list->next;
+            Record temp = NULL;
+            //record * rr = days[i].list->next;
+            Record rr = r->next;
             while(rr != NULL && rr != r){
                 // 找到上次访问的记录
                 if(rr -> code == r -> code){
@@ -107,19 +108,19 @@ int main(){
     int num;
     cin >> num;
     day days[num];
-    // 对结构体成员进行初始化
+    // 对每天的借书信息的结构体进行初始化
     for(int i = 0;i< num;i++){
         days[i].length = 0;
-        record * r = (record *)malloc(sizeof(record));
+		Record r = new record;
         r->next = NULL;
         days[i].list = r;
         days[i].last = r;
     }
     // 进行输入
-    for(int i = 0;i < num;i++){
+	for(int i = 0;i < num;i++){
         string str;
         // 创建一个元素
-        record * r = (record *)malloc(sizeof(record));
+		Record r = new record;
         cin >> r->code;
         cin >> r->type;
         cin >>  str;
@@ -132,16 +133,16 @@ int main(){
                 //<< r ->type << " "
                 //<< r ->hour << " "
                 //<< r ->mins << endl;
-            // 添加到末尾
-            if(isOk(&days[i],r) == 1){
-                // 如何输入合法,并且不与已有的借书矛盾,则加入到列表中
+             //添加到末尾
+            if(isInputOk(&days[i],r) == 1){
+                // 如果输入合法,并且不与已有的借书矛盾,则加入到列表中
                 //cout << "-add-" << r->code << endl;
                 days[i].last->next = r;
                 days[i].last = r;
                 days[i].length ++;
             }
             // 继续输入
-            r = (record *)malloc(sizeof(record));
+			Record r = new record;
             cin >> r->code;
             cin >> r->type;
             cin >>  str;
