@@ -33,7 +33,7 @@ void min(road *info,int length,int &start,int &end,int data){
 	// 计算条路径上的最小值,对其中的出发地点进行修改
 	for(int i = 0;i < length;i++){
 		if(info[i].length != 0 && info[i].length < data){
-			start = 
+			start = jide;
 		}
 	}
 }
