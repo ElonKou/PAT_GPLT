@@ -5,33 +5,29 @@
 // Date   :Wed 24 Jan 2018 10:38:59 AM CST
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 using namespace std;
 
-int main(){
+int main() {
     int fenzi;
     int fenmu;
     cin >> fenzi;
     cin >> fenmu;
-    cout<< fenzi
-        << "/";
-    if(fenmu == 0){
-        cout<< fenmu << "=Error";
-    }else{
-        if(fenmu < 0){
+    cout << fenzi << "/";
+    if (fenmu == 0) {
+        cout << fenmu << "=Error";
+    } else {
+        if (fenmu < 0) {
             cout << "(";
         }
         cout << fenmu;
-        if(fenmu < 0){
+        if (fenmu < 0) {
             cout << ")";
         }
-        cout<< "="
-            << setiosflags(ios::fixed) << setprecision(2)
-            << fenzi/(fenmu*1.0);
+        cout << "=" << setiosflags(ios::fixed) << setprecision(2)
+             << fenzi / (fenmu * 1.0);
     }
-    
-    
+
     return 0;
 }
-

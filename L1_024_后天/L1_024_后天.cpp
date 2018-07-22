@@ -8,14 +8,13 @@
 #include <iostream>
 using namespace std;
 
-int main(){
+int main() {
     int today = 0;
     cin >> today;
-    if((today+2)%7 == 0){
+    if ((today + 2) % 7 == 0) {
         cout << 7;
-    }else{
-        cout << (today+2)%7;
+    } else {
+        cout << (today + 2) % 7;
     }
     return 0;
 }
-

@@ -9,16 +9,15 @@
 #define TIMES 3
 using namespace std;
 
-void printThreeTimes(){
-	for (int i =0;i < TIMES-1;i++){
-		cout << "I'm gonna WIN!" << endl;
-	}
-	cout << "I'm gonna WIN!";
+void printThreeTimes() {
+    for (int i = 0; i < TIMES - 1; i++) {
+        cout << "I'm gonna WIN!" << endl;
+    }
+    cout << "I'm gonna WIN!";
 }
 
-int main(){
-	// 重要的话说三遍
-	printThreeTimes();
+int main() {
+    // 重要的话说三遍
+    printThreeTimes();
     return 0;
 }
-

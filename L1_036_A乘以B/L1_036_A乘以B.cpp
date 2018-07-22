@@ -8,12 +8,11 @@
 #include <iostream>
 using namespace std;
 
-int main(){
-	int numa;
-	int numb;
-	cin >> numa;
-	cin >> numb;
-	cout << numa*numb;
+int main() {
+    int numa;
+    int numb;
+    cin >> numa;
+    cin >> numb;
+    cout << numa * numb;
     return 0;
 }
-

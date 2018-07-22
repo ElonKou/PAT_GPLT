@@ -8,15 +8,14 @@
 #include <iostream>
 using namespace std;
 
-int main(){
+int main() {
     int number;
     cin >> number;
     int count = 1;
-    while(number != 250){
-        count ++;
+    while (number != 250) {
+        count++;
         cin >> number;
     }
     cout << count;
     return 0;
 }
-

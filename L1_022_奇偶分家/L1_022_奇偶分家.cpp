@@ -8,22 +8,21 @@
 #include <iostream>
 using namespace std;
 
-int main(){
+int main() {
     // 奇数偶数分家
     int even = 0;
     int odd = 0;
     int count = 0;
     cin >> count;
     int number;
-    for(int i = 0;i<count;i++){
+    for (int i = 0; i < count; i++) {
         cin >> number;
-        if(number %2 ==0){
-            even ++;
-        }else{
-            odd ++;
+        if (number % 2 == 0) {
+            even++;
+        } else {
+            odd++;
         }
     }
-    cout << odd << " " <<even;
+    cout << odd << " " << even;
     return 0;
 }
-

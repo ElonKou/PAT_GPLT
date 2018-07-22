@@ -1,172 +1,42 @@
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// File:  L1_043_阅览室.cpp
-// Author :elonkou
-// E-mail :elonkou@ktime.cc
-// Date   :Sun 28 Jan 2018 02:01:01 AM CST
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+#include <cstring>
 #include <iostream>
+
 using namespace std;
 
-typedef struct record{
-    int code;
-    char type;
-    int hour;
-    int mins;
-    record *next;
-}*Record;
-
-typedef struct{
-    int length;							// 有效元素的个数
-    record *list = NULL;				// 每个链表元素的开始位置
-    record *last = NULL;				// 每个链表元素的最后一个元素,用作插入元素
-}day;
-
-int isInputOk(day *d,record *r){
-    // 检查是否符合要求
-    int ok = 0;
-    Record temp = NULL;
-    Record rr = d->list->next;
-    while(rr != NULL){
-        // 找到上次访问的记录
-        if(rr -> code == r -> code){
-            temp = rr;
-            rr = rr -> next;
-        }else{
-            rr = rr -> next;
-        }
-    }
-    if(temp == NULL){
-        if(r -> type == 'E'){
-            ok = 0;
-        }else{
-            ok = 1;
-        }
-    }else{
-        if(temp ->type == 'S' && r -> type == 'E'){
-            // 前借后还,ok
-            ok = 1;
-        }
-        if(temp -> type == 'S' && r -> type == 'S'){
-            // 两次连续借书,no
-            ok = 0;
-        }
-        if(temp -> type == 'E' && r ->type == 'S'){
-            // 还掉之后再借,ok
-            ok = 1;
-        }
-        if(temp ->type == 'E' && r -> type == 'E'){
-            // 两次连续还书,no
-            ok = 0;
-        }
-    }
-    return ok;
-}
-
-void calculate(day days[],int num){
-    int result[num][2] = {0};
-    for(int i = 0;i <num;i++){
-        Record r = days[i].list->next;
-        while(r != NULL){
-            // 循环每个元素
-            // 找到每个和之相匹配的元素
-            Record temp = NULL;
-            //record * rr = days[i].list->next;
-            Record rr = r->next;
-            while(rr != NULL && rr != r){
-                // 找到上次访问的记录
-                if(rr -> code == r -> code){
-                    temp = rr;
-                    rr = rr -> next;
-                }else{
-                    rr = rr -> next;
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int id = -1;
+        double time = 0;
+        int num = 0;
+        int mintue[2001] = {0};
+        bool flag[2001];
+        memset(flag, false, sizeof(flag));
+        while (id != 0) {
+            char a;
+            int h, m;
+            scanf("%d %c %d:%d", &id, &a, &h, &m);
+            if (id == 0) {
+                break;
+            } else if (a == 'S') {
+                mintue[id] = h * 60 + m;
+                flag[id] = true;
+            } else if (a == 'E') {
+                if (flag[id]) {
+                    flag[id] = false;
+                    time += h * 60 + m - mintue[id];
+                    mintue[id] = 0;
+                    num++;
                 }
             }
-            // 写入
-            if(temp != NULL){
-                // 找到了匹配的选项,进行计算
-                if(temp ->code == r -> code && temp -> type == 'S' && r -> type == 'E'){
-                    result[i][0] ++;
-                    result[i][1] += (r->hour-temp->hour-1) *60+(60+r->mins-temp->mins);
-                }
-            }
-            r = r->next;
         }
-        if(result[i][0] == 0){
-            cout << "0 0";
-        }else{
-            cout << result[i][0] << " " << (result[i][1]+result[i][0]-1)/result[i][0];
+        int t;
+        if (num != 0) {
+            time /= num;
         }
-        if(i != num-1){
-            cout << endl;
-        }
+        t = time + 0.5f;
+        printf("%d %d\n", num, t);
     }
-}
-
-int main(){
-    // 阅览室的座位的查询
-    int num;
-    cin >> num;
-    day days[num];
-    // 对每天的借书信息的结构体进行初始化
-    for(int i = 0;i< num;i++){
-        days[i].length = 0;
-		Record r = new record;
-        r->next = NULL;
-        days[i].list = r;
-        days[i].last = r;
-    }
-    // 进行输入
-	for(int i = 0;i < num;i++){
-        string str;
-        // 创建一个元素
-		Record r = new record;
-        cin >> r->code;
-        cin >> r->type;
-        cin >>  str;
-        r->hour = atoi(str.substr(0,2).c_str());
-        r->mins = atoi(str.substr(3,2).c_str());
-        r->next = NULL;
-            
-        while(r->code != 0){
-            //cout<< r ->code << " "
-                //<< r ->type << " "
-                //<< r ->hour << " "
-                //<< r ->mins << endl;
-             //添加到末尾
-            if(isInputOk(&days[i],r) == 1){
-                // 如果输入合法,并且不与已有的借书矛盾,则加入到列表中
-                //cout << "-add-" << r->code << endl;
-                days[i].last->next = r;
-                days[i].last = r;
-                days[i].length ++;
-            }
-            // 继续输入
-			Record r = new record;
-            cin >> r->code;
-            cin >> r->type;
-            cin >>  str;
-            r->hour = atoi(str.substr(0,2).c_str());
-            r->mins = atoi(str.substr(3,2).c_str());
-            r->next = NULL;
-        }
-    }
-    //cout << days[0].length << endl;
-    //cout << days[1].length << endl;
-    //cout << days[2].length << endl;
-    //cout << days[0].list->next->hour << endl;
-    //cout << days[2].list->next->hour << endl;
-    //for(int i = 0;i < num;i++){
-        //record *r = days[i].list ->next ;
-        //while(r!=NULL){
-            //cout<< r ->code << " "
-                //<< r ->type << " "
-                //<< r ->hour << " "
-                //<< r ->mins << endl;
-            //r = r->next;
-        //}
-    //}
-    calculate(days,num);
     return 0;
 }
-

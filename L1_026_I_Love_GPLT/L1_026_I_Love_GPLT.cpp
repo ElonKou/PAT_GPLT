@@ -8,13 +8,12 @@
 #include <iostream>
 using namespace std;
 
-int main(){
+int main() {
     string str = "I Love GPLT";
     int i = 0;
-    for(i = 0;i < str.length()-1;i++){
+    for (i = 0; i < str.length() - 1; i++) {
         cout << str[i] << endl;
     }
     cout << str[i];
     return 0;
 }
-

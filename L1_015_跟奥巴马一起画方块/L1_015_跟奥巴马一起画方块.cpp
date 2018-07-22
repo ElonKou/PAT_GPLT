@@ -8,18 +8,17 @@
 #include <iostream>
 using namespace std;
 
-int main(){
-	// 跟奥巴马一起画方块,难度太低了
-	int number;
-	char c;
-	cin >> number;
-	cin >> c;
-	for(int i = 0;i<(number+1)/2;i++){
-		for (int j =0;j < number;j++){
-			cout << c;
-		}
-		cout << endl;
-	}
+int main() {
+    // 跟奥巴马一起画方块,难度太低了
+    int number;
+    char c;
+    cin >> number;
+    cin >> c;
+    for (int i = 0; i < (number + 1) / 2; i++) {
+        for (int j = 0; j < number; j++) {
+            cout << c;
+        }
+        cout << endl;
+    }
     return 0;
 }
-
