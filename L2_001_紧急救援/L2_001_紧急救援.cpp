@@ -5,62 +5,125 @@
 // Date   :Sun 18 Feb 2018 05:51:38 PM CST
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#include <climits>
+#include <cstdio>
 #include <iostream>
+#include <string>
+#define LEN 500
 using namespace std;
 
-struct road {
-    int start, end, length;
-};
+// void print(int (&roads)[LEN][LEN]) {
+//     for (int i = 0; i < 4; i++) {
+//         for (int j = 0; j < 4; j++) {
+//             if (roads[i][j] == INT_MAX) {
+//                 cout << "∞";
+//             } else {
+//                 cout << roads[i][j];
+//             }
+//         }
+//         cout << endl;
+//     }
+// }
 
-struct city {
-    int aidCnt;
-};
+int calcCost(int (&aids)[LEN], string path) {
+    int len = 0;
+    for (int i = 0; i < path.size(); i++) {
+        // cout << path[i] << ":" << endl;
+        len += aids[path[i] - '0'];
+    }
+    return len;
+}
 
-void print(road (&r)[500][500]) {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (r[i][j].length == 0) {
-                cout << "*";
-            } else {
-                cout << r[i][j].length;
+void run(int (&roads)[LEN][LEN],
+         int (&aids)[LEN],
+         int (&dis)[LEN],
+         int (&pathCnt)[LEN],
+         int roadCnt,
+         int cityCnt,
+         string (&path)[LEN],
+         int start) {
+    bool tag[LEN];
+    for (int i = 0; i < cityCnt; i++) {
+        path[i] = to_string(start);
+        dis[i] = roads[start][i];
+    }
+    int cnt = 0;
+    // tag[start] = true;
+    dis[start] = 0;
+    pathCnt[start] = 1;
+    while (cnt != cityCnt) {
+        int minPath = 0;
+        int minValue = INT_MAX;
+        for (int i = 0; i < cityCnt; i++) {
+            if (!tag[i] && dis[i] < minValue) {
+                minValue = dis[i];
+                minPath = i;
             }
         }
-        cout << endl;
-    }
-}
-
-void min(road (&info)[500], int length, int& start, int& end, int data) {
-    // 计算条路径上的最小值,对其中的出发地点进行修改
-    for (int i = 0; i < length; i++) {
-        if (info[i].length != 0 && info[i].length < data) {
-            // start = jide;
+        tag[minPath] = true;
+        cnt++;
+        for (int i = 0; i < cityCnt; i++) {
+            if (!tag[i] && roads[minPath][i] != INT_MAX &&
+                (roads[minPath][i] + dis[minPath]) < dis[i]) {
+                dis[i] = dis[minPath] + minValue;
+                path[i] = path[minPath] + to_string(i);
+                pathCnt[i] = pathCnt[minPath];
+            }
+            if (!tag[i] && roads[minPath][i] != INT_MAX &&
+                (roads[minPath][i] + dis[minPath]) == dis[i]) {
+                string pathA = path[i];
+                string pathB = path[minPath] + to_string(i);
+                int costA = calcCost(aids, pathA);
+                int costB = calcCost(aids, pathB);
+                if (costA < costB) {
+                    path[i] = pathB;
+                }
+                pathCnt[i] = pathCnt[i] + pathCnt[minPath];
+            }
         }
     }
-}
-
-void dijkstra(int start, int end, road (&info)[500][500], int cityCnt) {
-    // for(){
-    // 	//
-    // }
 }
 
 int main() {
     int cityCnt;
     int roadCnt;
     int start, end;
+    int aids[LEN] = {0};
+    int roads[LEN][LEN] = {{0}};
+    int dis[LEN] = {0};
+    int pathCnt[LEN] = {0};
+    string path[LEN];
     cin >> cityCnt >> roadCnt >> start >> end;
-    road info[500][500] = {0, 0, 0};
-    city cities[500] = {0};
-    // input
     for (int i = 0; i < cityCnt; i++) {
-        cin >> cities[i].aidCnt;
+        cin >> aids[i];
     }
     for (int i = 0; i < roadCnt; i++) {
-        road r;
-        cin >> r.start >> r.end >> r.length;
-        info[r.start][r.end] = info[r.end][r.start] = r;
+        int start, end, length;
+        cin >> start >> end >> length;
+        roads[start][end] = roads[end][start] = length;
     }
-    print(info);
-    dijkstra(start, end, info, cityCnt);
+    for (int i = 0; i < cityCnt; i++) {
+        for (int j = 0; j < cityCnt; j++) {
+            if (roads[i][j] == 0) {
+                roads[i][j] = INT_MAX;
+            }
+        }
+    }
+
+    run(roads, aids, dis, pathCnt, roadCnt, cityCnt, path, start);
+    // cout << pathCnt[end] << " " << calcCost(aids, path[end]) << endl;
+    // for (int i = 0; i < path[end].size(); i++) {
+    //     cout << path[end][i] - '0';
+    //     if (i != path[end].size() - 1) {
+    //         cout << " ";
+    //     }
+    // }
+    printf("%d %d\n", pathCnt[end], calcCost(aids, path[end]));
+    for (int i = 0; i < path[end].size(); i++) {
+        printf("%d", path[end][i] - '0');
+        if (i != path[end].size() - 1) {
+            printf(" ");
+        }
+    }
     return 0;
 }
